@@ -132,6 +132,7 @@ public class MainActivity extends AppCompatActivity {
                         Log.e(LOG_TAG, "Error closing stream", e);
                     }
                 }
+                Log.d(LOG_TAG, forecastJsonStr);
             }
             return null;
         }
