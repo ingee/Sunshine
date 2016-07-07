@@ -1,5 +1,6 @@
 package com.android.ingee.sunshine;
 
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -62,17 +63,22 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == R.id.action_refresh) {
             FetchWeatherTask weatherTask = new FetchWeatherTask();
-            weatherTask.execute();
+            weatherTask.execute("Seongnam,KR");
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    public class FetchWeatherTask extends AsyncTask<Void, Void, Void> {
+    public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
         private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
 
         @Override
-        protected Void doInBackground(Void... params) {
+        protected Void doInBackground(String... params) {
+            //params should exist, it should be city-name
+            if (params.length == 0) {
+                return null;
+            }
+
             // These two need to be declared outside the try/catch
             // so that they can be closed in the finally block.
             HttpURLConnection urlConnection = null;
@@ -81,13 +87,35 @@ public class MainActivity extends AppCompatActivity {
             // Will contain the raw JSON response as a string.
             String forecastJsonStr = null;
 
+            String format = "json";
+            String units = "metric";
+            int numDays = 7;
+
             try {
                 // Construct the URL for the OpenWeatherMap query
                 // Possible parameters are available at OWM's forecast API page, at
                 // http://openweathermap.org/API#forecast
-                String baseUrl = "http://api.openweathermap.org/data/2.5/forecast/daily?id=1897000&mode=json&units=metric&cnt=7";
-                String apiKey = "&appid=01fd0d2baf46be09e48b6e50691f8fb0";
-                URL url = new URL(baseUrl.concat(apiKey));
+                //
+                // API ex)
+                // http://api.openweathermap.org/data/2.5/forecast/daily?id=1897000&mode=json&units=metric&cnt=7
+                // http://api.openweathermap.org/data/2.5/forecast/daily?q=seongnam,KR&mode=json&units=metric&cnt=7&appid=01fd0d2baf46be09e48b6e50691f8fb0
+                //
+                final String FORECAST_BASE_URL = "http://api.openweathermap.org/data/2.5/forecast/daily?";
+                final String QUERY_PARAM = "q";
+                final String FORMAT_PARAM = "mode";
+                final String UNITS_PARAM = "units";
+                final String DAYS_PARAM = "cnt";
+                final String APPID_PARAM = "appid";
+                Uri builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
+                                .appendQueryParameter(QUERY_PARAM, params[0])
+                                .appendQueryParameter(FORMAT_PARAM, format)
+                                .appendQueryParameter(UNITS_PARAM, units)
+                                .appendQueryParameter(DAYS_PARAM, Integer.toString(numDays))
+                                .appendQueryParameter(APPID_PARAM, BuildConfig.OPEN_WEATHER_MAP_API_KEY)
+                                .build();
+
+                URL url = new URL(builtUri.toString());
+                Log.v(LOG_TAG, "Built URI = " + builtUri.toString());
 
                 // Create the request to OpenWeatherMap, and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
@@ -132,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
                         Log.e(LOG_TAG, "Error closing stream", e);
                     }
                 }
-                Log.d(LOG_TAG, forecastJsonStr);
+                Log.v(LOG_TAG, forecastJsonStr);
             }
             return null;
         }
