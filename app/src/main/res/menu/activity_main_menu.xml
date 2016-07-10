@@ -3,4 +3,7 @@
     <item android:id="@+id/action_refresh"
         android:title="@string/action_refresh"
         android:showAsAction="never" />
+    <item android:id="@+id/action_test"
+        android:title="@string/action_test"
+        android:showAsAction="never" />
 </menu>
