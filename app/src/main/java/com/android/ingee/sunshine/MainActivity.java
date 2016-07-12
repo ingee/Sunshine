@@ -75,18 +75,15 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_test) {
             Log.v("MainActivity", "Test Menu Selected~~~");
 
-            //test {{{
+            //jus test, don't mind {{{
 
             try {
-                JSONObject jsonObj = new JSONObject("{\"city\":{\"id\":5375480,\"name\":\"Mountain View\",\"coord\":{\"lon\":-122.083847,\"lat\":37.386051},\"country\":\"US\",\"population\":0},\"cod\":\"200\",\"message\":0.0319,\"cnt\":7,\"list\":[{\"dt\":1468094400,\"temp\":{\"day\":24.65,\"min\":9.39,\"max\":24.65,\"night\":9.39,\"eve\":20.05,\"morn\":24.65},\"pressure\":993.53,\"humidity\":70,\"weather\":[{\"id\":800,\"main\":\"Clear\",\"description\":\"clear sky\",\"icon\":\"01n\"}],\"speed\":2.41,\"deg\":294,\"clouds\":0},{\"dt\":1468180800,\"temp\":{\"day\":21.42,\"min\":8.14,\"max\":21.42,\"night\":8.14,\"eve\":16.7,\"morn\":12.08},\"pressure\":992.72,\"humidity\":65,\"weather\":[{\"id\":800,\"main\":\"Clear\",\"description\":\"clear sky\",\"icon\":\"01d\"}],\"speed\":2.15,\"deg\":297,\"clouds\":0},{\"dt\":1468267200,\"temp\":{\"day\":23.92,\"min\":8.99,\"max\":24.22,\"night\":8.99,\"eve\":19.82,\"morn\":11.63},\"pressure\":989.02,\"humidity\":67,\"weather\":[{\"id\":800,\"main\":\"Clear\",\"description\":\"clear sky\",\"icon\":\"01d\"}],\"speed\":1.36,\"deg\":264,\"clouds\":0},{\"dt\":1468353600,\"temp\":{\"day\":18.69,\"min\":11.3,\"max\":21.58,\"night\":14.32,\"eve\":21.58,\"morn\":11.3},\"pressure\":1008.8,\"humidity\":0,\"weather\":[{\"id\":800,\"main\":\"Clear\",\"description\":\"clear sky\",\"icon\":\"01d\"}],\"speed\":2.52,\"deg\":296,\"clouds\":0},{\"dt\":1468440000,\"temp\":{\"day\":17.65,\"min\":10.59,\"max\":20.72,\"night\":13.4,\"eve\":20.72,\"morn\":10.59},\"pressure\":1010.96,\"humidity\":0,\"weather\":[{\"id\":800,\"main\":\"Clear\",\"description\":\"clear sky\",\"icon\":\"01d\"}],\"speed\":1.95,\"deg\":283,\"clouds\":11},{\"dt\":1468526400,\"temp\":{\"day\":18.05,\"min\":10.7,\"max\":20.86,\"night\":13.84,\"eve\":20.86,\"morn\":10.7},\"pressure\":1008.86,\"humidity\":0,\"weather\":[{\"id\":500,\"main\":\"Rain\",\"description\":\"light rain\",\"icon\":\"10d\"}],\"speed\":1.95,\"deg\":287,\"clouds\":11},{\"dt\":1468612800,\"temp\":{\"day\":17.53,\"min\":11.46,\"max\":20.29,\"night\":13.95,\"eve\":20.29,\"morn\":11.46},\"pressure\":1007.54,\"humidity\":0,\"weather\":[{\"id\":500,\"main\":\"Rain\",\"description\":\"light rain\",\"icon\":\"10d\"}],\"speed\":1.69,\"deg\":257,\"clouds\":15}]}");
-                JSONArray listArr = jsonObj.getJSONArray("list");
-                JSONObject firstObj = listArr.getJSONObject(0);
-                JSONObject tempObj = firstObj.getJSONObject("temp");
-                double maxTemp = tempObj.getDouble("max");
-                Log.v("Test Code", "max temp = " + maxTemp);
-            }
-            catch (Exception e) {
+                Log.v("Test Code", "try~~~");
+                int i = 1/0;
+            } catch (Exception e) {
                 Log.v("Test Code", "something wrong~~~");
+            } finally {
+                Log.v("Test Code", "finally~~~");
             }
 
             //}}}
