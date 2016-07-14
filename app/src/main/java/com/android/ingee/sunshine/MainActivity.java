@@ -9,8 +9,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -54,7 +57,15 @@ public class MainActivity extends AppCompatActivity {
                 weekForecast);
         ListView vw = (ListView) findViewById(R.id.listview_forecast);
         vw.setAdapter(mForecastAdapter);
-        Log.e("MainActivity", "ingee,ingee,ingee~~~");
+
+        vw.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getApplicationContext(),
+                        mForecastAdapter.getItem(position), Toast.LENGTH_SHORT).show();
+            }
+        });
+        Log.v(getClass().getSimpleName(), "MainActivity created~~~");
     }
 
     @Override
