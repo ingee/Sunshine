@@ -4,5 +4,5 @@
     <string name="action_test">Test</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_detail">Details</string>
-    <string name="hello_world">Hello Wrold!</string>
+    <string name="title_activity_settings">Settings</string>
 </resources>

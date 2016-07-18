@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -67,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
         Log.v(getClass().getSimpleName(), "MainActivity created~~~");
     }
 
@@ -90,14 +92,8 @@ public class MainActivity extends AppCompatActivity {
 
             //jus test, don't mind {{{
 
-            try {
-                Log.v("Test Code", "try~~~");
-                int i = 1/0;
-            } catch (Exception e) {
-                Log.v("Test Code", "something wrong~~~");
-            } finally {
-                Log.v("Test Code", "finally~~~");
-            }
+            Toast toast = Toast.makeText(getApplicationContext(), "ingee~~", Toast.LENGTH_SHORT);
+            toast.show();
 
             //}}}
             return true;
