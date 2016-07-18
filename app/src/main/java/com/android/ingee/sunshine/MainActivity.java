@@ -87,6 +87,10 @@ public class MainActivity extends AppCompatActivity {
             weatherTask.execute("Seongnam,KR");
             return true;
         }
+        if (id == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
+            return true;
+        }
         if (id == R.id.action_test) {
             Log.v("MainActivity", "Test Menu Selected~~~");
 
