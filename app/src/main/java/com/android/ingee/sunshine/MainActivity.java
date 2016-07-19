@@ -1,9 +1,11 @@
 package com.android.ingee.sunshine;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.Time;
 import android.util.Log;
@@ -84,7 +86,11 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == R.id.action_refresh) {
             FetchWeatherTask weatherTask = new FetchWeatherTask();
-            weatherTask.execute("Seongnam,KR");
+            SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(
+                    getApplicationContext());
+            String location = pref.getString(getString(R.string.pref_location_key),
+                    getString(R.string.pref_location_default));
+            weatherTask.execute(location);
             return true;
         }
         if (id == R.id.action_settings) {
@@ -96,7 +102,11 @@ public class MainActivity extends AppCompatActivity {
 
             //jus test, don't mind {{{
 
-            Toast toast = Toast.makeText(getApplicationContext(), "ingee~~", Toast.LENGTH_SHORT);
+            SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(
+                    getApplicationContext());
+            String location = pref.getString(getString(R.string.pref_location_key),
+                    getString(R.string.pref_location_default));
+            Toast toast = Toast.makeText(getApplicationContext(), location, Toast.LENGTH_SHORT);
             toast.show();
 
             //}}}
