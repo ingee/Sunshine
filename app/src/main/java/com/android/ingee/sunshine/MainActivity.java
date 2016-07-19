@@ -101,9 +101,8 @@ public class MainActivity extends AppCompatActivity {
 
             SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(
                     getApplicationContext());
-            String location = pref.getString(getString(R.string.pref_location_key),
-                    getString(R.string.pref_location_default));
-            Toast toast = Toast.makeText(getApplicationContext(), location, Toast.LENGTH_SHORT);
+            String value = pref.getString(getString(R.string.pref_units_key), "none");
+            Toast toast = Toast.makeText(getApplicationContext(), value, Toast.LENGTH_SHORT);
             toast.show();
 
             //}}}
