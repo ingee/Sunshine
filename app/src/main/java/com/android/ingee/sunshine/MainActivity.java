@@ -30,34 +30,30 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     ArrayAdapter<String> mForecastAdapter;
+
+    private void updateWeather() {
+        FetchWeatherTask weatherTask = new FetchWeatherTask();
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(
+                getApplicationContext());
+        String location = pref.getString(getString(R.string.pref_location_key),
+                getString(R.string.pref_location_default));
+        weatherTask.execute(location);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String[] data = {
-                "Today - Sunny - 88/63",
-                "Tomorrow - Foggy - 70/40",
-                "Weds - Cloudy - 72/63",
-                "Thurs - Asteroids - 75/65",
-                "Fri - Heavy Rain - 65/56",
-                "Sat - HELP TRAPPED IN WEATHERSTATION - 60/51",
-                "Sun - Sunny - 80/68"
-        };
-        List<String> weekForecast = new ArrayList<String>(Arrays.asList(data));
-
         mForecastAdapter = new ArrayAdapter<String>(
                 this,
                 R.layout.list_item_forecast,
                 R.id.list_item_forecast_textview,
-                weekForecast);
+                new ArrayList<String>());
         ListView vw = (ListView) findViewById(R.id.listview_forecast);
         vw.setAdapter(mForecastAdapter);
 
@@ -75,6 +71,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        updateWeather();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.activity_main_menu, menu);
@@ -85,12 +87,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_refresh) {
-            FetchWeatherTask weatherTask = new FetchWeatherTask();
-            SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(
-                    getApplicationContext());
-            String location = pref.getString(getString(R.string.pref_location_key),
-                    getString(R.string.pref_location_default));
-            weatherTask.execute(location);
+            updateWeather();
             return true;
         }
         if (id == R.id.action_settings) {
