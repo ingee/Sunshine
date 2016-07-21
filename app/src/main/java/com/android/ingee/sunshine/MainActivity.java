@@ -33,6 +33,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    private final String LOG_TAG = MainActivity.class.getSimpleName();
     ArrayAdapter<String> mForecastAdapter;
 
     private void updateWeather() {
@@ -42,6 +43,25 @@ public class MainActivity extends AppCompatActivity {
         String location = pref.getString(getString(R.string.pref_location_key),
                 getString(R.string.pref_location_default));
         weatherTask.execute(location);
+    }
+
+    private void openPerferredLocationInMap() {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(
+                getApplicationContext());
+        String location = pref.getString(getString(R.string.pref_location_key),
+                getString(R.string.pref_location_default));
+
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW);
+        Uri mapLocation = Uri.parse("geo:0.0?").buildUpon()
+                .appendQueryParameter("q", location)
+                .build();
+        mapIntent.setData(mapLocation);
+
+        if (mapIntent.resolveActivity(getPackageManager()) != null) {
+            startActivity(mapIntent);
+        } else {
+            Log.d(LOG_TAG, "Couldn't call " + location + ", no receiving apps installed!");
+        }
     }
 
     @Override
@@ -92,6 +112,10 @@ public class MainActivity extends AppCompatActivity {
         }
         if (id == R.id.action_settings) {
             startActivity(new Intent(this, SettingsActivity.class));
+            return true;
+        }
+        if (id == R.id.action_map) {
+            openPerferredLocationInMap();
             return true;
         }
         if (id == R.id.action_test) {
