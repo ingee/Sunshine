@@ -3,6 +3,7 @@
     <string name="action_refresh">날씨 정보 갱신</string>
     <string name="action_settings">프로그램 설정</string>
     <string name="action_map">지도에서 지역 보기</string>
+    <string name="action_share">공유</string>
     <string name="action_test">테스트</string>
     <string name="title_activity_detail">Details</string>
     <string name="title_activity_settings">Settings</string>
