@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.test.AndroidTestCase;
 
+import com.android.ingee.sunshine.data.WeatherContract;
 import com.example.android.sunshine.app.utils.PollingCheck;
 
 import java.util.Map;
