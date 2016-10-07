@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.android.sunshine.app.data;
+package com.android.ingee.sunshine.data;
 
+import android.content.UriMatcher;
 import android.net.Uri;
 import android.test.AndroidTestCase;
 
@@ -25,7 +26,7 @@ import android.test.AndroidTestCase;
     a nice compromise between data hiding and testability.
  */
 public class TestUriMatcher extends AndroidTestCase {
-    private static final String LOCATION_QUERY = "London, UK";
+    private static final String LOCATION_QUERY = "Seongnam,KR";
     private static final long TEST_DATE = 1419033600L;  // December 20th, 2014
     private static final long TEST_LOCATION_ID = 10L;
 
@@ -41,16 +42,16 @@ public class TestUriMatcher extends AndroidTestCase {
         for each of the Uri types that our ContentProvider can handle.  Uncomment this when you are
         ready to test your UriMatcher.
      */
-//    public void testUriMatcher() {
-//        UriMatcher testMatcher = WeatherProvider.buildUriMatcher();
-//
-//        assertEquals("Error: The WEATHER URI was matched incorrectly.",
-//                testMatcher.match(TEST_WEATHER_DIR), WeatherProvider.WEATHER);
-//        assertEquals("Error: The WEATHER WITH LOCATION URI was matched incorrectly.",
-//                testMatcher.match(TEST_WEATHER_WITH_LOCATION_DIR), WeatherProvider.WEATHER_WITH_LOCATION);
-//        assertEquals("Error: The WEATHER WITH LOCATION AND DATE URI was matched incorrectly.",
-//                testMatcher.match(TEST_WEATHER_WITH_LOCATION_AND_DATE_DIR), WeatherProvider.WEATHER_WITH_LOCATION_AND_DATE);
-//        assertEquals("Error: The LOCATION URI was matched incorrectly.",
-//                testMatcher.match(TEST_LOCATION_DIR), WeatherProvider.LOCATION);
-//    }
+    public void testUriMatcher() {
+        UriMatcher testMatcher = WeatherProvider.buildUriMatcher();
+
+        assertEquals("Error: The WEATHER URI was matched incorrectly.",
+                testMatcher.match(TEST_WEATHER_DIR), WeatherProvider.WEATHER);
+        assertEquals("Error: The WEATHER WITH LOCATION URI was matched incorrectly.",
+                testMatcher.match(TEST_WEATHER_WITH_LOCATION_DIR), WeatherProvider.WEATHER_WITH_LOCATION);
+        assertEquals("Error: The WEATHER WITH LOCATION AND DATE URI was matched incorrectly.",
+                testMatcher.match(TEST_WEATHER_WITH_LOCATION_AND_DATE_DIR), WeatherProvider.WEATHER_WITH_LOCATION_AND_DATE);
+        assertEquals("Error: The LOCATION URI was matched incorrectly.",
+                testMatcher.match(TEST_LOCATION_DIR), WeatherProvider.LOCATION);
+    }
 }
