@@ -2,6 +2,7 @@ package com.android.ingee.sunshine;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,6 +18,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.android.ingee.sunshine.data.WeatherContract;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,23 +37,16 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private final String LOG_TAG = MainActivity.class.getSimpleName();
-    ArrayAdapter<String> mForecastAdapter;
+    ForecastAdapter mForecastAdapter;
 
     private void updateWeather() {
-        FetchWeatherTask weatherTask = new FetchWeatherTask(getApplicationContext(),
-                mForecastAdapter);
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(
-                getApplicationContext());
-        String location = pref.getString(getString(R.string.pref_location_key),
-                getString(R.string.pref_location_default));
+        FetchWeatherTask weatherTask = new FetchWeatherTask(this);
+        String location = Utility.getPreferredLocation(this);
         weatherTask.execute(location);
     }
 
     private void openPerferredLocationInMap() {
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(
-                getApplicationContext());
-        String location = pref.getString(getString(R.string.pref_location_key),
-                getString(R.string.pref_location_default));
+        String location = Utility.getPreferredLocation(this);
 
         Intent mapIntent = new Intent(Intent.ACTION_VIEW);
         Uri mapLocation = Uri.parse("geo:0.0?").buildUpon()
@@ -70,23 +66,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mForecastAdapter = new ArrayAdapter<String>(
-                this,
-                R.layout.list_item_forecast,
-                R.id.list_item_forecast_textview,
-                new ArrayList<String>());
+        String locationSetting = Utility.getPreferredLocation(this);
+        String sortOrder = WeatherContract.WeatherEntry.COLUMN_DATE + " ASC";
+        Uri weatherForLocationUri = WeatherContract.WeatherEntry.buildWeatherLocationWithStartDate(
+                locationSetting, System.currentTimeMillis());
+        Cursor cur = this.getContentResolver().query(weatherForLocationUri, null, null, null, sortOrder);
+
+        mForecastAdapter = new ForecastAdapter(this, cur, 0);
         ListView vw = (ListView) findViewById(R.id.listview_forecast);
         vw.setAdapter(mForecastAdapter);
-
-        vw.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String forecast = mForecastAdapter.getItem(position);
-                Intent intent = new Intent(getApplicationContext(), DetailActivity.class)
-                        .putExtra(Intent.EXTRA_TEXT, forecast);
-                startActivity(intent);
-            }
-        });
 
         Log.v(getClass().getSimpleName(), "MainActivity created~~~");
     }
