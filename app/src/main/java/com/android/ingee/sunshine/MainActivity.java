@@ -6,9 +6,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
+import android.content.CursorLoader;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -21,7 +19,7 @@ import com.android.ingee.sunshine.data.WeatherContract;
 
 public class MainActivity
         extends AppCompatActivity
-        implements LoaderManager.LoaderCallbacks<Cursor> {
+        implements android.app.LoaderManager.LoaderCallbacks<Cursor> {
 
     private final String LOG_TAG = MainActivity.class.getSimpleName();
     private static final int FORECAST_LOADER = 0;
@@ -58,8 +56,7 @@ public class MainActivity
         ListView vw = (ListView) findViewById(R.id.listview_forecast);
         vw.setAdapter(mForecastAdapter);
 
-        getLoaderManager().initLoader(FORECAST_LOADER, null,
-                (android.support.v4.app.LoaderManager.LoaderCallbacks<Cursor>) this);
+        getLoaderManager().initLoader(FORECAST_LOADER, null, this);
 
         Log.v(getClass().getSimpleName(), "MainActivity created~~~");
     }
@@ -110,7 +107,7 @@ public class MainActivity
     }
 
     @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+    public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
         String locationSetting = Utility.getPreferredLocation(this);
         String sortOrder = WeatherContract.WeatherEntry.COLUMN_DATE + " ASC";
         Uri weatherForLocationUri = WeatherContract.WeatherEntry.buildWeatherLocationWithStartDate(
@@ -119,12 +116,12 @@ public class MainActivity
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+    public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor data) {
         mForecastAdapter.swapCursor(data);
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
+    public void onLoaderReset(android.content.Loader<Cursor> loader) {
         mForecastAdapter.swapCursor(null);
     }
 }
