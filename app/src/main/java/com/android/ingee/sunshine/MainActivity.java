@@ -24,6 +24,8 @@ public class MainActivity
         implements android.app.LoaderManager.LoaderCallbacks<Cursor> {
 
     private final String LOG_TAG = MainActivity.class.getSimpleName();
+    private final String FORECASTFRAGMENT_TAG = "FFTAG";
+    private String mLocation;
     private static final int FORECAST_LOADER = 0;
     private static final String[] FORECAST_COLUMNS = {
             WeatherContract.WeatherEntry.TABLE_NAME + "." + WeatherContract.WeatherEntry._ID,
@@ -72,6 +74,7 @@ public class MainActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mLocation = Utility.getPreferredLocation(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -97,10 +100,9 @@ public class MainActivity
         Log.v(getClass().getSimpleName(), "MainActivity created~~~");
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+    void onLocationChanged() {
         updateWeather();
+        getLoaderManager().restartLoader(FORECAST_LOADER, null, this);
     }
 
     @Override
@@ -164,5 +166,15 @@ public class MainActivity
     @Override
     public void onLoaderReset(android.content.Loader<Cursor> loader) {
         mForecastAdapter.swapCursor(null);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String location = Utility.getPreferredLocation(this);
+        if (location != null && !location.equals(mLocation)) {
+            onLocationChanged();
+        }
+        mLocation = location;
     }
 }
